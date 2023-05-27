@@ -13,6 +13,12 @@ class asset :
         self.width, self.height = self.rect.size
         self.rect.center = (self.width / 2, self.height / 2)
 
+    def resize(self,width,height):
+        self.image = pygame.transform.scale(self.image, (width, height))
+        self.rect = self.image.get_rect()
+        self.width, self.height = self.rect.size
+        self.rect.center = (self.width / 2, self.height / 2)
+
 class assets_collection :
     def __init__(self):
         self.assets = []
@@ -36,6 +42,9 @@ class assets_collection :
 
     def get_macros(self):
         return self.macros
+
+    def __iter__(self):
+        return iter(self.assets)
 
 assets = assets_collection()
 

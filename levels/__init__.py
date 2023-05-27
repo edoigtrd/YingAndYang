@@ -1,5 +1,6 @@
 import os
 import pygame
+import functools
 
 class Level :
     def __init__(self, filename):
@@ -23,10 +24,16 @@ class Level :
                     if self.data.split('\n')[y][x] == 'P':
                         self.player2 = [x, y]
                         self.tiles[y][x] = ' '
-            self.padx = lambda screen: (screen.get_width() - self.width * 16) // 2
-            self.pady = lambda screen: (screen.get_height() - self.height * 16) // 2
-            self.pad = lambda screen: (self.padx(screen), self.pady(screen))
+    def padx(self,screen):
+        return (screen.get_width() - self.width * self.get_ratio(screen)) / 2
+    def pady(self,screen):
+        return (screen.get_height() - self.height * self.get_ratio(screen)) / 2
+    def pad(self,screen):
+        return (self.padx(screen), self.pady(screen))
 
+    def get_ratio(self,screen):
+        wratio, hratio = screen.get_width() / self.width, screen.get_height() / self.height
+        return min(wratio, hratio)
 class levels_collection :
     def __init__(self):
         self.levels = []
