@@ -54,3 +54,6 @@ for i in os.listdir('assets'):
         assets.append(asset('assets/' + i))
 
 assets.set_macro("#", "wall")
+assets.set_macro("T", "targetB")
+assets.set_macro("t", "targetW")
+

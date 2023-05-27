@@ -29,18 +29,37 @@ def resize():
 def load():
     pygame.init()
     audios.play("music", True)
+    pygame.display.set_icon(assets["icon"].image)
 
 def keyboard(k) :
-    audios.play("oot")
+    global current
+    if k.type == pygame.KEYDOWN :
+        m = False
+        if k.key in [pygame.K_LEFT, pygame.K_q] :
+            m = [-1,0]
+        if k.key in [pygame.K_RIGHT, pygame.K_d] :
+            m = [1,0]
+        if k.key in [pygame.K_UP, pygame.K_z] :
+            m = [0,-1]
+        if k.key in [pygame.K_DOWN, pygame.K_s] :
+            m = [0,1]
+        if k.key == pygame.K_SPACE :
+            levels[current].load()
+        if m :
+            audios.play("oot")
+            c = []
+            levels[current].move(m,1)
+            c.append(levels[current].check())
+            levels[current].move(m,2)
+            c.append(levels[current].check())
+            if "gameover" in c :
+                audios.play("lose")
+                levels[current].load()
+            if "win" in c :
+                audios.play("win")
+                current += 1
 def update():
     global screen
-    for event in pygame.event.get():
-        if event.type == pygame.VIDEORESIZE:
-            screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
-        if event.type == pygame.FULLSCREEN:
-            screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        if event.type == pygame.KEYDOWN :
-            print(event.key)
     resize()
 
 
@@ -52,6 +71,14 @@ def draw():
         for y in range(l.height):
             if l.tiles[y][x] == '#':
                 screen.blit(assets['wall'].image, (x * assets["wall"].width + l.padx(screen), y * assets["wall"].height + l.pady(screen)))
+            if l.tiles[y][x] == 't':
+                screen.blit(assets["targetB"].image, (x * assets["targetB"].width + l.padx(screen), y * assets["targetB"].height + l.pady(screen)))
+            if l.tiles[y][x] == 'T':
+                screen.blit(assets["targetW"].image, (x * assets["targetW"].width + l.padx(screen), y * assets["targetW"].height + l.pady(screen)))
+            if l.tiles[y][x] == '%':
+                screen.blit(assets["stone"].image, (x * assets["stone"].width + l.padx(screen), y * assets["stone"].height + l.pady(screen)))
+            if l.tiles[y][x] == 'x':
+                screen.blit(assets["spike"].image, (x * assets["spike"].width + l.padx(screen), y * assets["spike"].height + l.pady(screen)))
 
     screen.blit(assets['playerW'].image,
                 (l.player1[0] * assets["playerW"].width + l.padx(screen), l.player1[1] * assets["playerW"].height + l.pady(screen)))
