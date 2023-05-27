@@ -52,12 +52,13 @@ def keyboard(k) :
             c.append(levels[current].check())
             levels[current].move(m,2)
             c.append(levels[current].check())
+            if "win" == c[1] :
+                audios.play("win")
+                current += 1
             if "gameover" in c :
                 audios.play("lose")
                 levels[current].load()
-            if "win" in c :
-                audios.play("win")
-                current += 1
+
 def update():
     global screen
     resize()
