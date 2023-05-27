@@ -6,17 +6,10 @@ from sound import audios
 
 pygame.init()
 
-WIDTH = 800
-HEIGHT = 600
-
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-pygame.display.set_caption("YingAndYang")
-
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+WIDTH = pygame.display.Info().current_w * 0.7
+HEIGHT = pygame.display.Info().current_h * 0.7
 
 current = 0
-
 
 def resize():
     for i in assets:
@@ -24,9 +17,13 @@ def resize():
 
 
 def load():
+    global screen
     pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
     audios.play("music", True)
+    pygame.display.set_caption("YingAndYang", "assets/icon.png")
     pygame.display.set_icon(assets["icon"].image)
+    pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 
 def keyboard(k):
@@ -43,6 +40,11 @@ def keyboard(k):
             m = [0, 1]
         if k.key == pygame.K_SPACE:
             levels[current].load()
+        if k.key == pygame.K_F11 :
+            if screen.get_flags() & pygame.FULLSCREEN:
+                pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+            else:
+                pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
         if m:
             audios.play("oot")
             c = []
@@ -64,7 +66,7 @@ def update():
 
 
 def draw():
-    screen.fill(BLACK)
+    screen.fill((0,0,0))
     l = levels[current]
 
     for x in range(l.width):
