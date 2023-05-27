@@ -15,6 +15,7 @@ class asset:
         self.rect.center = (self.width / 2, self.height / 2)
 
     def resize(self, width, height):
+        self.image = pygame.image.load(self.filename)
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
         self.width, self.height = self.rect.size
