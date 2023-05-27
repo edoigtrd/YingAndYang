@@ -2,6 +2,7 @@ import toml
 
 config = None
 
+
 class Config:
     def __init__(self, d=None):
         self.d = d
@@ -35,5 +36,6 @@ with open('config.toml', 'r'):
 
 def reload():
     config.reload()
+
 
 reload()

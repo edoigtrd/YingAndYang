@@ -1,13 +1,13 @@
 import os
-import pygame
-import functools
 
-class Level :
+
+class Level:
     def __init__(self, filename):
         if not os.path.isfile(filename):
             raise FileNotFoundError(filename)
         self.filename = filename
         self.load()
+
     def load(self):
         with open(self.filename, 'r') as f:
             self.data = open(self.filename, 'r').read()
@@ -24,18 +24,21 @@ class Level :
                     if self.data.split('\n')[y][x] == 'P':
                         self.player2 = [x, y]
                         self.tiles[y][x] = ' '
-    def padx(self,screen):
+
+    def padx(self, screen):
         return (screen.get_width() - self.width * self.get_ratio(screen)) / 2
-    def pady(self,screen):
+
+    def pady(self, screen):
         return (screen.get_height() - self.height * self.get_ratio(screen)) / 2
-    def pad(self,screen):
+
+    def pad(self, screen):
         return (self.padx(screen), self.pady(screen))
 
-    def get_ratio(self,screen):
+    def get_ratio(self, screen):
         wratio, hratio = screen.get_width() / self.width, screen.get_height() / self.height
         return min(wratio, hratio)
 
-    def move(self,way, player = 1):
+    def move(self, way, player=1):
         p = None
         op = None
         if player == 1:
@@ -44,7 +47,7 @@ class Level :
         elif player == 2:
             p = self.player2
             op = self.player1
-        while True :
+        while True:
             p[0] += way[0]
             p[1] += way[1]
             if p == op:
@@ -78,17 +81,22 @@ class Level :
             return "gameover"
         if self.tiles[self.player1[1]][self.player1[0]] == 't' and self.tiles[self.player2[1]][self.player2[0]] == 'T':
             return "win"
-class levels_collection :
+
+
+class levels_collection:
     def __init__(self):
         self.levels = []
+
     def __getitem__(self, name) -> Level:
         if type(name) == int:
             return self.levels[name]
-        else :
+        else:
             raise TypeError(f"Index must be int, not {type(name)}")
         raise KeyError(name)
+
     def append(self, level):
         self.levels.append(Level(level))
+
 
 levels = levels_collection()
 

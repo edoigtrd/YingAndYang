@@ -1,9 +1,12 @@
 import os
+
 import pygame
+
 from config import config
 
-class sound :
-    def __init__(self,path):
+
+class sound:
+    def __init__(self, path):
         self.path = path
         self.sound = pygame.mixer.Sound(path)
         self.name = path.split('/')[-1].split('.')[0]
@@ -11,8 +14,9 @@ class sound :
     def play(self):
         self.sound.play()
 
-class music :
-    def __init__(self,path):
+
+class music:
+    def __init__(self, path):
         self.path = path
         self.music = pygame.mixer.music.load(path)
         self.name = path.split('/')[-1].split('.')[0]
@@ -23,7 +27,8 @@ class music :
     def loop(self):
         pygame.mixer.music.play(-1)
 
-class audio_collection :
+
+class audio_collection:
     def __init__(self):
         self.sounds = []
         self.music = []
@@ -46,12 +51,12 @@ class audio_collection :
             self.sounds.append(audio)
         elif type == "music":
             self.music.append(audio)
-        else :
+        else:
             raise TypeError(f"Type must be 'sound' or 'music', not {type}")
         self.names.append(audio.name)
 
     def play(self, name, loop=False):
-        if config.muted :
+        if config.muted:
             return
         if not name in self.names:
             return
@@ -63,20 +68,21 @@ class audio_collection :
             if i.name == name:
                 if loop:
                     i.loop()
-                else :
+                else:
                     i.play()
                 return
+
 
 pygame.mixer.init()
 
 audios = audio_collection()
 
-for i in os.listdir('sound/sounds') :
+for i in os.listdir('sound/sounds'):
     if i.endswith('.mp3'):
         print(f"Loading sound: {i}")
         audios.append(sound('sound/sounds/' + i))
 
-for i in os.listdir('sound/music') :
+for i in os.listdir('sound/music'):
     if i.endswith('.mp3'):
         print(f"Loading music: {i}")
         audios.append(music('sound/music/' + i), type="music")
