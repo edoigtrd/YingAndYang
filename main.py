@@ -22,15 +22,18 @@ WHITE = (255, 255, 255)
 
 current = 0
 
+def resize():
+    for i in assets:
+        i.resize(levels[current].get_ratio(screen), levels[current].get_ratio(screen))
 
 def load():
     pygame.init()
     audios.play("music", True)
 
-
+def keyboard(k) :
+    audios.play("oot")
 def update():
     global screen
-    print("Updating")
     for event in pygame.event.get():
         if event.type == pygame.VIDEORESIZE:
             screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
@@ -41,13 +44,7 @@ def update():
     resize()
 
 
-def resize():
-    for i in assets:
-        i.resize(levels[current].get_ratio(screen), levels[current].get_ratio(screen))
-
-
 def draw():
-    print("Drawing")
     screen.fill(BLACK)
     l = levels[current]
 
@@ -60,13 +57,10 @@ def draw():
                 (l.player1[0] * assets["playerW"].width + l.padx(screen), l.player1[1] * assets["playerW"].height + l.pady(screen)))
     screen.blit(assets['playerB'].image,
                 (l.player2[0] * assets["playerB"].width + l.padx(screen), l.player2[1] * assets["playerB"].height + l.pady(screen)))
+
     pygame.display.flip()
 
-
 load()
-
-update_thread = threading.Thread(target=update)
-draw_thread = threading.Thread(target=draw)
 
 running = True
 while running :
@@ -75,6 +69,11 @@ while running :
             running = False
             pygame.quit()
             quit()
+        if events.type in [pygame.KEYUP, pygame.KEYDOWN, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN] :
+            keyboard(events)
+    update()
+    draw()
+
 
 
 pygame.quit()
