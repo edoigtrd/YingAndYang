@@ -8,21 +8,34 @@ from config import config
 class sound:
     def __init__(self, path):
         self.path = path
-        self.sound = pygame.mixer.Sound(path)
+        try :
+            self.sound = pygame.mixer.Sound(path)
+            self.enabled = True
+        except pygame.error:
+            self.enabled = False
+            print(f"Failed to load sound: {path}")
         self.name = path.split('/')[-1].split('.')[0]
 
     def play(self):
-        self.sound.play()
+        if self.enabled:
+            self.sound.play()
+        return
 
 
 class music:
     def __init__(self, path):
         self.path = path
-        self.music = pygame.mixer.music.load(path)
+        try :
+            self.music = pygame.mixer.music.load(path)
+            self.enabled = True
+        except pygame.error:
+            self.enabled = False
+            print(f"Failed to load music: {path}")
         self.name = path.split('/')[-1].split('.')[0]
 
     def play(self):
-        pygame.mixer.music.play()
+        if self.enabled:
+            pygame.mixer.music.play()
 
     def loop(self):
         pygame.mixer.music.play(-1)
