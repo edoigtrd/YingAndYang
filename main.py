@@ -19,11 +19,11 @@ def resize():
 def load():
     global screen
     pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.FULLSCREEN)
     audios.play("music", True)
     pygame.display.set_caption("YingAndYang", "assets/icon.png")
     pygame.display.set_icon(assets["icon"].image)
-    pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+    pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN, pygame.RESIZABLE)
 
 
 def keyboard(k):
@@ -42,9 +42,9 @@ def keyboard(k):
             levels[current].load()
         if k.key == pygame.K_F11 :
             if screen.get_flags() & pygame.FULLSCREEN:
-                pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+                pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.FULLSCREEN)
             else:
-                pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+                pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN, pygame.RESIZABLE)
         if m:
             audios.play("oot")
             c = []
